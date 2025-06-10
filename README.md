@@ -1,8 +1,11 @@
-# Self-hosted LiveSync - Coolify Deployment Version
+# Self-hosted LiveSync - Coolify Deployment Ready 🚀
+
+**One-click CouchDB deployment for Obsidian LiveSync on Coolify**
+
 [Japanese docs](./README_ja.md) - [Chinese docs](./README_cn.md).
 
-> **🚀 Coolify Deployment Ready**  
-> This repository has been prepared for easy deployment on [Coolify](https://coolify.io/) self-hosting platform with pre-configured Docker setup and CORS settings optimized for Obsidian LiveSync.
+> **✨ Ready-to-Deploy on Coolify**  
+> This repository contains a production-ready CouchDB setup specifically configured for Obsidian LiveSync. Deploy your own private note synchronization server in minutes using [Coolify](https://coolify.io/) with Docker, complete with SSL, health checks, and CORS configuration.
 
 
 Self-hosted LiveSync is a community-developed synchronisation plug-in available on all Obsidian-compatible platforms. It leverages robust server solutions such as CouchDB or object storage systems (e.g., MinIO, S3, R2, etc.) to ensure reliable data synchronisation.
@@ -40,21 +43,61 @@ This plug-in may be particularly useful for researchers, engineers, and develope
 
 ## How to use
 
-### 🚀 Quick Setup - Deploy on Coolify
+### 🚀 Deploy on Coolify (Recommended)
 
-**Recommended for Coolify users**
+**Complete step-by-step guide for Coolify deployment**
 
-1. **Deploy on Coolify:**
-   - Import this repository to your GitHub account
-   - Create a new project in Coolify and connect your GitHub repository
-   - Coolify will automatically detect the `docker-compose.yml` and deploy CouchDB
-   - Set environment variables: `COUCHDB_USER` and `COUCHDB_PASSWORD`
-   - Deploy and access your CouchDB at `https://your-domain.com:5984`
+#### Step 1: Deploy CouchDB Server
 
-2. **Configure Obsidian Plugin:**
-   - Install "Self-hosted LiveSync" plugin in Obsidian
-   - Use your Coolify deployment URL as the remote database
-   - Follow the [Quick Setup](docs/quick_setup.md) guide for plugin configuration
+1. **Fork this repository** to your GitHub account
+2. **Create new project in Coolify:**
+   - Choose "Git Repository"
+   - Connect your forked repository
+   - Branch: `main`
+   - Build Pack: **Select "Dockerfile"** (important!)
+   - Port: `5984`
+
+3. **Set environment variables:**
+   ```
+   COUCHDB_USER=admin
+   COUCHDB_PASSWORD=your_secure_password_here
+   ```
+
+4. **Configure domain:**
+   - Add your custom domain or use Coolify's provided domain
+   - SSL will be automatically configured
+
+5. **Deploy:**
+   - Click "Deploy"
+   - Wait for build to complete (2-3 minutes)
+   - Health check should pass
+
+#### Step 2: Configure Obsidian
+
+1. **Install Plugin:**
+   - Obsidian Settings → Community plugins
+   - Search "Self-hosted LiveSync"
+   - Install and Enable
+
+2. **Setup Connection:**
+   - Remote Database URI: `https://your-domain.com`
+   - Username: `admin` (or your COUCHDB_USER)
+   - Password: Your secure password
+   - Database name: `obsidian-livesync`
+
+3. **Test & Setup:**
+   - Click "Test Database Connection"
+   - If successful → Click "Setup"
+   - Enable LiveSync and start syncing!
+
+#### Step 3: Configure Multiple Devices
+
+Repeat Step 2 on each device using the same connection details.
+
+> **✅ Pro Tips:**
+> - Use a strong password for COUCHDB_PASSWORD
+> - Enable end-to-end encryption in plugin settings
+> - Your data stays on your server - complete privacy!
 
 ### 3-minute setup - CouchDB on fly.io
 
@@ -105,21 +148,52 @@ Synchronization status is shown in the status bar with the following icons.
 
 To prevent file and database corruption, please wait to stop Obsidian until all progress indicators have disappeared as possible (The plugin will also try to resume, though). Especially in case of if you have deleted or renamed files.
 
-## Coolify Deployment Files
+## 🔧 Coolify Deployment Files & Configuration
 
-This repository includes the following files specifically for Coolify deployment:
+This repository includes production-ready files for seamless Coolify deployment:
 
-- **`Dockerfile`** - CouchDB container with CORS configuration for Obsidian
-- **`docker-compose.yml`** - Complete orchestration with volumes and health checks
-- **`local.ini`** - CouchDB configuration with Obsidian-compatible CORS settings
-- **`.env.example`** - Template for environment variables
-- **`.dockerignore`** - Optimized Docker build context
+### Docker Configuration
+- **`Dockerfile`** - Production CouchDB 3.4.2 with authentication and CORS
+- **`docker-compose.yml`** - Complete orchestration with persistent volumes
+- **`nixpacks.toml`** - Forces Coolify to use Dockerfile instead of auto-detection
+- **`.dockerignore`** - Optimized build context (excludes unnecessary files)
 
-The deployment uses CouchDB 3.4.2 with:
-- Port 5984 exposed
-- Persistent data storage
-- Health checks enabled
-- CORS headers configured for Obsidian app integration
+### CouchDB Configuration  
+- **`local.ini`** - Pre-configured for Obsidian LiveSync with:
+  - Single-node setup
+  - Authentication enabled
+  - CORS headers for Obsidian app compatibility
+  - Large document support (50MB)
+  - Optimized for sync performance
+
+### Environment Setup
+- **`.env.example`** - Template with secure defaults
+- Environment variables: `COUCHDB_USER`, `COUCHDB_PASSWORD`
+- Automatic SSL/TLS via Coolify reverse proxy
+
+### Features
+✅ **Plug & Play** - Works immediately after deployment  
+✅ **Secure** - Authentication required, HTTPS enabled  
+✅ **Optimized** - Health checks, persistent storage, performance tuned  
+✅ **Compatible** - Full Obsidian LiveSync feature support  
+
+### Troubleshooting Coolify Deployment
+
+**Common Issues:**
+
+1. **Build fails with "npm ci" error:**
+   - Ensure Build Pack is set to **"Dockerfile"** not "Nixpacks"
+   - Check if `nixpacks.toml` is present in repository
+
+2. **Health check fails:**
+   - Wait 2-3 minutes for CouchDB initialization
+   - Verify COUCHDB_USER and COUCHDB_PASSWORD are set
+   - Check logs for any startup errors
+
+3. **Connection refused from Obsidian:**
+   - Verify domain SSL certificate is valid
+   - Test: `curl https://your-domain.com/_up` should return JSON
+   - Check CORS settings in `local.ini`
 
 ## Tips and Troubleshooting
 If you are having problems getting the plugin working see: [Tips and Troubleshooting](docs/troubleshooting.md). 
