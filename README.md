@@ -1,5 +1,8 @@
-# Self-hosted LiveSync
+# Self-hosted LiveSync - Coolify Deployment Version
 [Japanese docs](./README_ja.md) - [Chinese docs](./README_cn.md).
+
+> **🚀 Coolify Deployment Ready**  
+> This repository has been prepared for easy deployment on [Coolify](https://coolify.io/) self-hosting platform with pre-configured Docker setup and CORS settings optimized for Obsidian LiveSync.
 
 
 Self-hosted LiveSync is a community-developed synchronisation plug-in available on all Obsidian-compatible platforms. It leverages robust server solutions such as CouchDB or object storage systems (e.g., MinIO, S3, R2, etc.) to ensure reliable data synchronisation.
@@ -37,9 +40,25 @@ This plug-in may be particularly useful for researchers, engineers, and develope
 
 ## How to use
 
+### 🚀 Quick Setup - Deploy on Coolify
+
+**Recommended for Coolify users**
+
+1. **Deploy on Coolify:**
+   - Import this repository to your GitHub account
+   - Create a new project in Coolify and connect your GitHub repository
+   - Coolify will automatically detect the `docker-compose.yml` and deploy CouchDB
+   - Set environment variables: `COUCHDB_USER` and `COUCHDB_PASSWORD`
+   - Deploy and access your CouchDB at `https://your-domain.com:5984`
+
+2. **Configure Obsidian Plugin:**
+   - Install "Self-hosted LiveSync" plugin in Obsidian
+   - Use your Coolify deployment URL as the remote database
+   - Follow the [Quick Setup](docs/quick_setup.md) guide for plugin configuration
+
 ### 3-minute setup - CouchDB on fly.io
 
-**Recommended for beginners**
+**Alternative deployment option**
 
 [![LiveSync Setup onto Fly.io SpeedRun 2024 using Google Colab](https://img.youtube.com/vi/7sa_I1832Xc/0.jpg)](https://www.youtube.com/watch?v=7sa_I1832Xc)
 
@@ -85,6 +104,22 @@ Synchronization status is shown in the status bar with the following icons.
      -   🔌 Working Customisation items (Configuration, snippets, and plug-ins)
 
 To prevent file and database corruption, please wait to stop Obsidian until all progress indicators have disappeared as possible (The plugin will also try to resume, though). Especially in case of if you have deleted or renamed files.
+
+## Coolify Deployment Files
+
+This repository includes the following files specifically for Coolify deployment:
+
+- **`Dockerfile`** - CouchDB container with CORS configuration for Obsidian
+- **`docker-compose.yml`** - Complete orchestration with volumes and health checks
+- **`local.ini`** - CouchDB configuration with Obsidian-compatible CORS settings
+- **`.env.example`** - Template for environment variables
+- **`.dockerignore`** - Optimized Docker build context
+
+The deployment uses CouchDB 3.4.2 with:
+- Port 5984 exposed
+- Persistent data storage
+- Health checks enabled
+- CORS headers configured for Obsidian app integration
 
 ## Tips and Troubleshooting
 If you are having problems getting the plugin working see: [Tips and Troubleshooting](docs/troubleshooting.md). 

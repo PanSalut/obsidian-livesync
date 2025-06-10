@@ -13,7 +13,35 @@ main_org.js
 meta.json
 meta-*.json
 
-
 # obsidian
 data.json
 .vscode
+
+# Environment variables
+.env
+
+# CouchDB data
+data/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
