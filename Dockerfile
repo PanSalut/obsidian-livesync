@@ -18,8 +18,8 @@ RUN chown -R couchdb:couchdb /opt/couchdb/data /opt/couchdb/etc
 EXPOSE 5984
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:5984/_up || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f -u ${COUCHDB_USER}:${COUCHDB_PASSWORD} http://localhost:5984/_up || exit 1
 
 # Start CouchDB
 CMD ["/docker-entrypoint.sh", "/opt/couchdb/bin/couchdb"]
